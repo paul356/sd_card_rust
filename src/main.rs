@@ -1,30 +1,9 @@
-use esp_idf_sys::{sdmmc_host_t, esp_vfs_fat_sdmmc_mount_config_t, esp_vfs_fat_sdmmc_mount, esp_vfs_fat_sdcard_unmount, sdmmc_card_t, sdmmc_host_init, ESP_OK, sdmmc_host_set_bus_width, sdmmc_host_get_slot_width, sdmmc_host_set_bus_ddr_mode, sdmmc_host_set_card_clk, sdmmc_host_set_cclk_always_on, sdmmc_host_do_transaction, sdmmc_host_deinit, sdmmc_host_io_int_enable, sdmmc_host_io_int_wait, sdmmc_host_get_real_freq, sdmmc_host_set_input_delay, sdmmc_host_get_dma_info, sdmmc_host_t__bindgen_ty_1};
+use esp_idf_sys::{sdmmc_host_t, esp_vfs_fat_sdmmc_mount_config_t, esp_vfs_fat_sdmmc_mount, esp_vfs_fat_sdcard_unmount, sdmmc_card_t, sdmmc_host_init, ESP_OK, sdmmc_host_set_bus_width, sdmmc_host_get_slot_width, sdmmc_host_set_bus_ddr_mode, sdmmc_host_set_card_clk, sdmmc_host_set_cclk_always_on, sdmmc_host_do_transaction, sdmmc_host_deinit, sdmmc_host_io_int_enable, sdmmc_host_io_int_wait, sdmmc_host_get_real_freq, sdmmc_host_set_input_delay, sdmmc_host_get_dma_info, sdmmc_host_t__bindgen_ty_1, sdmmc_slot_config_t__bindgen_ty_1, sdmmc_slot_config_t__bindgen_ty_2, sdmmc_slot_config_t};
 use std::ffi::CString;
-use std::os::raw::c_int;
 use std::os::raw::c_uint;
-use std::os::raw::c_uchar;
 use std::os::raw::c_void;
 use std::io::Write;
 use std::io::Read;
-
-#[repr(C)]
-#[derive(Debug)]
-struct sdmmc_slot_config_t {
-    clk: c_int,
-    cmd: c_int,
-    d0: c_int,
-    d1: c_int,
-    d2: c_int,
-    d3: c_int,
-    d4: c_int,
-    d5: c_int,
-    d6: c_int,
-    d7: c_int,
-    cd: c_int,
-    wp: c_int,
-    width: c_uchar,
-    flags: c_uint,
-}
 
 const SDMMC_SLOT_FLAG_INTERNAL_PULLUP: c_uint = 1 << 0;
 const SDMMC_HOST_FLAG_1BIT: c_uint = 1 << 0;
@@ -35,24 +14,26 @@ const SDMMC_HOST_SLOT_1: i32 = 1;
 const SDMMC_FREQ_DEFAULT: i32 = 20000;
 const SDMMC_DELAY_PHASE_0: u32 = 0;
 
-impl Default for sdmmc_slot_config_t {
-    fn default() -> Self {
-        Self {
-            clk: 7,
-            cmd: 6,
-            d0: 15,
-            d1: 16,
-            d2: 4,
-            d3: 5,
-            d4: -1,
-            d5: -1,
-            d6: -1,
-            d7: -1,
+fn get_slot_config() -> sdmmc_slot_config_t {
+    sdmmc_slot_config_t {
+        clk: 7,
+        cmd: 6,
+        d0: 15,
+        d1: 16,
+        d2: 4,
+        d3: 5,
+        d4: -1,
+        d5: -1,
+        d6: -1,
+        d7: -1,
+        __bindgen_anon_1: sdmmc_slot_config_t__bindgen_ty_1 {
             cd: 17,
+        },
+        __bindgen_anon_2: sdmmc_slot_config_t__bindgen_ty_2 {
             wp: -1,
-            width: 4,
-            flags: SDMMC_SLOT_FLAG_INTERNAL_PULLUP,
-        }
+        },
+        width: 4,
+        flags: SDMMC_SLOT_FLAG_INTERNAL_PULLUP,
     }
 }
 
@@ -102,7 +83,7 @@ fn main() {
         get_dma_info: Some(sdmmc_host_get_dma_info),
     };
 
-    let slot_config = sdmmc_slot_config_t::default();
+    let slot_config = get_slot_config();
 
     let mut card_handle: *mut sdmmc_card_t = std::ptr::null_mut();
 
