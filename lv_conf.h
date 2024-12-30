@@ -18,7 +18,7 @@
 #define LV_CONF_H
 
 /* If you need to include anything here, do it inside the `__ASSEMBLY__` guard */
-#if  0 && defined(__ASSEMBLY__)
+#if  1 && defined(__ASSEMBLY__)
 #include "my_include.h"
 #endif
 
@@ -107,7 +107,7 @@
  * - LV_OS_MQX
  * - LV_OS_SDL2
  * - LV_OS_CUSTOM */
-#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS   LV_OS_FREERTOS
 
 #if LV_USE_OS == LV_OS_CUSTOM
     #define LV_OS_CUSTOM_INCLUDE <stdint.h>
@@ -567,8 +567,8 @@
 /* Demonstrate special features */
 #define LV_FONT_MONTSERRAT_28_COMPRESSED 0  /**< bpp = 3 */
 #define LV_FONT_DEJAVU_16_PERSIAN_HEBREW 0  /**< Hebrew, Arabic, Persian letters and all their forms */
-#define LV_FONT_SIMSUN_14_CJK            0  /**< 1000 most common CJK radicals */
-#define LV_FONT_SIMSUN_16_CJK            0  /**< 1000 most common CJK radicals */
+#define LV_FONT_SIMSUN_14_CJK            1  /**< 1000 most common CJK radicals */
+#define LV_FONT_SIMSUN_16_CJK            1  /**< 1000 most common CJK radicals */
 
 /** Pixel perfect monospaced fonts */
 #define LV_FONT_UNSCII_8  0
